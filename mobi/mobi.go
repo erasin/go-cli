@@ -55,7 +55,7 @@ func main() {
 	fmt.Println("写入HTML")
 	// 创建历史文件
 	tmpfile, _ := os.Create(Tmp)
-	// defer os.Remove(Tmp)
+	defer os.Remove(Tmp)
 	defer fmt.Println("删除临时文件HTML")
 	defer tmpfile.Close()
 
