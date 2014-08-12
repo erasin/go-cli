@@ -27,7 +27,7 @@ func main() {
 	flag.StringVar(&Author, "a", "", "作者")
 	flag.StringVar(&filename, "f", "", "文件")
 	flag.StringVar(&Comment, "c", "", "简介")
-	flag.StringVar(&Lang, "l", "zh-CN", "语言")
+	flag.StringVar(&Lang, "l", "zh_CN", "语言zh_CN,ja_JP")
 	flag.Parse()
 
 	if filename == "" {
