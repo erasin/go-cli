@@ -3,9 +3,10 @@ package main
 import (
 	"github.com/codeskyblue/go-sh"
 	"github.com/russross/blackfriday"
+	fmt "github.com/wsxiaoys/terminal/color"
 
 	"flag"
-	"fmt"
+	// "fmt"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -49,18 +50,18 @@ func main() {
 					Author = "UNKNOW"
 				}
 			} else {
-				fmt.Println("err: use -f filename or input filename of type is md|text")
+				fmt.Println("@{r}[!ERROR]: @{|}use -f filename or input filename of type is md|text")
 				os.Exit(-1)
 			}
 		} else {
-			fmt.Println("err: use -f filename or input filename of type is md|text")
+			fmt.Println("@{r}[!ERROR]: @{|}use -f filename or input filename of type is md|text")
 			os.Exit(-1)
 		}
 	}
 
 	info, err := os.Stat(filename)
 	if err != nil {
-		fmt.Println("error: check your file is exist !")
+		fmt.Println("@{r}[!ERROR]: @{|}check your file is exist !")
 		os.Exit(-1)
 	}
 
@@ -93,22 +94,22 @@ func main() {
 		}
 	}
 
-	fmt.Printf("Title: %s\nAuthor: %s \n", Title, Author)
+	fmt.Printf("@{g}Title:@{|} %s\n@{g}Author:@{|} %s \n", Title, Author)
 
 	fmt.Println("create html file ...")
 	// 创建历史文件
 	tmpfile, _ := os.Create(Tmp)
 	defer os.Remove(Tmp)
-	defer fmt.Println("remove html file...")
+	defer fmt.Println("@{g}[OVER!]: @{|}remove html file...")
 	defer tmpfile.Close()
 
-	tmpfile.WriteString(fmt.Sprintf("<html><head><meta http-equiv='content-language' content='zh-CN' /><meta http-equiv='Content-type' content='text/html; charset=utf-8'><meta name='Author' content='%s'><title>%s</title></head><body>%s</body></html>", Author, Title, regexp.MustCompile(`\n`).ReplaceAllString(string(Md), "")))
+	tmpfile.WriteString(fmt.Sprintf("<html><head><meta http-equiv='content-language' content='%s' /><meta http-equiv='Content-type' content='text/html; charset=utf-8'><meta name='Author' content='%s'><title>%s</title></head><body>%s</body></html>", Lang, Author, Title, regexp.MustCompile(`\n`).ReplaceAllString(string(Md), "")))
 
-	fmt.Println("use ebook-convert create mobi...")
+	fmt.Println("@{g}use ebook-convert create mobi...@{|}")
 
-	fmt.Print(fmt.Sprintf("ebook-convert %s %s --authors %s --comments '%s' --level1-toc '//h:h1' --level2-toc '//h:h2' --language '%s'\n", Tmp, Mobi, Author, Comment, Lang))
+	fmt.Print(fmt.Sprintf("@{g}ebook-convert %s %s@{|} --authors %s --comments '%s' --level1-toc '//h:h1' --level2-toc '//h:h2' --level3-toc '//h:h3' --language '%s'\n", Tmp, Mobi, Author, Comment, Lang))
 
-	sh.Command("ebook-convert", Tmp, Mobi, "--authors", Author, "--comments", Comment, "--level1-toc", "//h:h1", "--level2-toc", "//h:h2", "--language", Lang).Run()
+	sh.Command("ebook-convert", Tmp, Mobi, "--authors", Author, "--comments", Comment, "--level1-toc", "//h:h1", "--level2-toc", "//h:h2", "--level3-toc", "//h:h3", "--language", Lang).Run()
 
 	fmt.Println("complete!")
 }
