@@ -50,15 +50,24 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == "GET" {
 
-		temp1 := `<html>
+		temp1 := `<!DOCTYPE html><html>
 <head>
     <title>{{.}}</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="http://cdn.staticfile.org/twitter-bootstrap/3.3.0/css/bootstrap.min.css">
+	<!-- <link rel="stylesheet" href="http://cdn.staticfile.org/twitter-bootstrap/3.3.0/css/bootstrap-theme.min.css"> -->
+	<link rel="stylesheet" href="http://cdn.staticfile.org/bootstrap-material-design/0.1.5/css/ripples.min.css">
+	<link rel="stylesheet" href="http://cdn.staticfile.org/bootstrap-material-design/0.1.5/css/material-wfont.min.css">
+	<link rel="stylesheet" href="http://cdn.staticfile.org/bootstrap-material-design/0.1.5/css/material.min.css">
 </head>
 <body>
-<form enctype="multipart/form-data" action="/upload" method="post">
-  <input type="file" name="uploadfile" />
-  <input type="submit" value="upload" />
-</form>
+<div class="container-fluid">
+	<form enctype="multipart/form-data" action="/upload" method="post">
+	<input type="file" name="uploadfile" multiple="">
+	<input class='btn' type="submit" value="submit" />
+	</form>
+</div>
 </body>
 </html>
 `
