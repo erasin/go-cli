@@ -99,7 +99,8 @@ func main() {
 	tmpfile, _ := os.Create(Tmp)
 	defer tmpfile.Close()
 
-	tmpfile.WriteString(fmt.Sprintf("<html><head><meta http-equiv='content-language' content='%s' /><meta http-equiv='Content-type' content='text/html; charset=utf-8'><meta name='Author' content='%s'><title>%s</title></head><body>%s</body></html>", Lang, Author, Title, regexp.MustCompile(`\n`).ReplaceAllString(string(Md), "")))
+	// tmpfile.WriteString(fmt.Sprintf("<!DOCTYPE HTML><html><head><meta http-equiv='content-language' content='%s' /><meta http-equiv='Content-type' content='text/html; charset=utf-8'><meta name='Author' content='%s'><title>%s</title><link href='style.css' type='text/css' rel='stylesheet'/></head><body>%s</body></html>", Lang, Author, Title, regexp.MustCompile(`\n`).ReplaceAllString(string(Md), "")))
+	tmpfile.WriteString(fmt.Sprintf("<!DOCTYPE HTML>\n<html>\n<head>\n<meta http-equiv='content-language' content='%s' />\n<meta http-equiv='Content-type' content='text/html; charset=utf-8'>\n<meta name='Author' content='%s'>\n<title>%s</title>\n<link href='style.css' type='text/css' rel='stylesheet'/>\n</head>\n<body>\n%s</body>\n</html>", Lang, Author, Title, string(Md)))
 
 	fmt.Println("complete!")
 }
