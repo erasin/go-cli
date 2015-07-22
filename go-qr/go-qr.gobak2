@@ -1,0 +1,35 @@
+package main
+
+import (
+	"github.com/qpliu/qrencode-go/qrencode"
+
+	"fmt"
+	"image/png"
+	"os"
+	"time"
+)
+
+func main2() {
+	var content string
+
+	if len(os.Args) > 1 {
+		content = os.Args[1]
+	} else {
+		fmt.Println("输入内容")
+		os.Exit(0)
+	}
+	grid, err := qrencode.Encode(content, qrencode.ECLevelQ)
+	if err != nil {
+		return
+	}
+
+	name := time.Now().Format("20060102150405") + ".png"
+	fmt.Println("file: ", name)
+	f, err := os.Create(name)
+	if err != nil {
+		return
+	}
+	defer f.Close()
+	png.Encode(f, grid.Image(8))
+
+}

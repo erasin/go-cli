@@ -1,13 +1,13 @@
 package main
 
 import (
-	"log"
-	"net/http"
-	"os"
-
 	"fmt"
 	"html/template"
 	"io"
+	"log"
+	"net"
+	"net/http"
+	"os"
 	"path/filepath"
 	// "regexp"
 	// "strconv"
@@ -38,6 +38,7 @@ func main() {
 	// 列出dir
 	mux.Handle("/", http.StripPrefix("/", http.FileServer(http.Dir(wd))))
 	mux.HandleFunc("/upload", Upload)
+	mux.HandleFunc("/ip", IpShow)
 
 	log.Printf("Start Port: http://127.0.0.1:%s\n", port)
 	if err := http.ListenAndServe(":"+port, mux); err != nil {
@@ -111,4 +112,9 @@ func check(name string) bool {
 		}
 	}
 	return true
+}
+
+func IpShow(w http.ResponseWriter, r *http.Request) {
+	ip, _, _ := net.SplitHostPort(r.RemoteAddr)
+	fmt.Fprintf(w, "{\"IP\":\"%s\"}", ip)
 }
