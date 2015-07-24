@@ -16,6 +16,7 @@ var (
 
 func main() {
 	url_ip := "http://ddns.oray.com/checkip"
+
 	// req := httplib.Get(url_ip)
 	// fmt.Println(req.String())
 
