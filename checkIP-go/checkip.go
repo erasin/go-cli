@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"net"
 	"net/http"
 	"regexp"
 
@@ -15,39 +16,38 @@ var (
 )
 
 func main() {
+	ip, err := globalIp()
+	fmt.Println(ip, err)
+	lip, err := localIp()
+	fmt.Println(lip, err)
+
+}
+
+// 获取广域网IP
+func globalIp() (ip string, err error) {
 	url_ip := "http://ddns.oray.com/checkip"
-
-	// req := httplib.Get(url_ip)
-	// fmt.Println(req.String())
-
-	var mailSubject string
-	var mailBody string
-
 	resp, err := http.Get(url_ip)
 	if err != nil {
-		fmt.Println(err)
+		return ip, err
 	} else {
 		defer resp.Body.Close()
 		body, err := ioutil.ReadAll(resp.Body)
+		_ = "breakpoint"
 		if err != nil {
-			fmt.Println(err)
+			return ip, err
 		}
-		ip := ipExp.FindString(string(body))
-		fmt.Println(ip)
-		mailSubject = "PI IP: " + ip
-		mailBody = " <html> <body> <h3> " + ip + " </h3> </body> </html>"
+		ip = ipExp.FindString(string(body))
+		return ip, nil
 	}
+}
 
-	fmt.Println("send email")
-	// err = domail(mailUser, mailPassword, mailHost, mailTo, mailSubject, mailBody, "html")
-	err = domail(mailTo, mailSubject, mailBody)
-
+// 获取局域网IP
+func localIp() (ip string, err error) {
+	conn, err := net.Dial("udp", "baidu.com:80")
+	defer conn.Close()
 	if err != nil {
-		fmt.Println("send mail error!")
-		fmt.Println(err)
-	} else {
-		fmt.Println("send mail success!")
+		return ip, err
 	}
-	// time.Sleep(time.Second * 30)
-
+	ip, _, _ = net.SplitHostPort(conn.LocalAddr().String())
+	return ip, nil
 }
