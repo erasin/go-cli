@@ -18,13 +18,11 @@ const (
 	Upload_Dir = "./"
 )
 
-func main() {
+func start() {
 
-	port := "8080"
-
-	if len(os.Args) > 1 {
-		port = os.Args[1]
-	}
+	// if len(os.Args) > 1 {
+	// 	port = os.Args[1]
+	// }
 
 	mux := http.NewServeMux()
 
